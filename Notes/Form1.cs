@@ -28,13 +28,7 @@ namespace Notes
 
             sqlConnection.Open();
 
-            if (sqlConnection.State == ConnectionState.Open)
-            {
-                MessageBox.Show("Подключение установлено!");
-            }
-            
         }
-
 
     }
 }
