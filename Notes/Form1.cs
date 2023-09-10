@@ -15,7 +15,7 @@ namespace Notes
 {
     public partial class Form1 : Form
     {
-        SqlConnection sqlConnection = null;
+        public static SqlConnection sqlConnection;
 
         void LoadBase()
         {
@@ -30,9 +30,7 @@ namespace Notes
         private void Form1_Load(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Data"].ConnectionString);
-
             sqlConnection.Open();
-
         }
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
