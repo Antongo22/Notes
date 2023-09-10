@@ -19,7 +19,46 @@ namespace Notes
 
         void LoadBase()
         {
+            string query = "SELECT [name], [path] FROM [Notes]";
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            SqlDataReader reader = command.ExecuteReader();
 
+            int x = 10;
+            int y = 30;
+            int textBoxWidth = 200;
+            int textBoxHeight = 100;
+
+            while (reader.Read())
+            {
+                string name = reader["name"].ToString();
+                string path = reader["path"].ToString();
+
+                GroupBox groupBox = new GroupBox();
+                groupBox.Location = new System.Drawing.Point(x, y);
+                groupBox.Size = new System.Drawing.Size(textBoxWidth + 20, textBoxHeight + 20);
+                groupBox.Text = name;
+
+                RichTextBox textBox = new RichTextBox();
+                textBox.Location = new System.Drawing.Point(10, 20);
+                textBox.Size = new System.Drawing.Size(textBoxWidth, textBoxHeight);
+                textBox.Multiline = true;
+                textBox.Font = new System.Drawing.Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
+                textBox.Text = new Data(path).GetAllText();
+                textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
+
+                groupBox.Controls.Add(textBox);
+                this.Controls.Add(groupBox);
+
+                x += groupBox.Width + 10;
+
+                if (x + groupBox.Width > 550)
+                {
+                    x = 10;
+                    y += groupBox.Height + 10;
+                }
+            }
+
+            reader.Close();
         }
 
         public Form1()
@@ -27,16 +66,23 @@ namespace Notes
             InitializeComponent();
         }
 
+        ~Form1()
+        {
+            sqlConnection.Close();
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Data"].ConnectionString);
             sqlConnection.Open();
+            LoadBase();
         }
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form3 form3 = new Form3();
             form3.ShowDialog();
+            LoadBase();
         }
     }
 }

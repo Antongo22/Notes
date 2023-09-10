@@ -34,6 +34,6 @@ namespace Notes
         /// Получить весь текст из файла
         /// </summary>
         /// <returns>Информация из базы ввиде массива строк</returns>
-        public string[] GetAllLines() => File.ReadAllLines(fileName);
+        public string GetAllText() => File.ReadAllText(fileName);
     }
 }
