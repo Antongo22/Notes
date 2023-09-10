@@ -17,6 +17,11 @@ namespace Notes
     {
         SqlConnection sqlConnection = null;
 
+        void LoadBase()
+        {
+
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -30,5 +35,10 @@ namespace Notes
 
         }
 
+        private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.ShowDialog();
+        }
     }
 }
