@@ -10,7 +10,7 @@ namespace Notes
     internal class Data
     {
         string fileName; // путь к базе
-        public static int id = 0;
+
         public Data(string file) 
         {
             string basesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");

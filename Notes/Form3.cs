@@ -29,8 +29,6 @@ namespace Notes
         {
             if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text))
             {
-              
-
                 // SQL-запрос INSERT
                 string insertQuery = $"INSERT INTO Notes (name, path) VALUES (N'{textBoxName.Text}', N''); SELECT SCOPE_IDENTITY();";
 
@@ -54,6 +52,8 @@ namespace Notes
                                 if (rowsAffected > 0)
                                 {
                                     MessageBox.Show("Запись успешно добавлена в таблицу.");
+                                    new Data(updatedPath).Add(textBoxText.Text);
+                                    Close();
                                 }
                                 else
                                 {
