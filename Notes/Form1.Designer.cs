@@ -69,14 +69,14 @@
             // заметкуToolStripMenuItem
             // 
             this.заметкуToolStripMenuItem.Name = "заметкуToolStripMenuItem";
-            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.заметкуToolStripMenuItem.Text = "Заметку";
             this.заметкуToolStripMenuItem.Click += new System.EventHandler(this.заметкуToolStripMenuItem_Click);
             // 
             // заметкуСДатойToolStripMenuItem
             // 
             this.заметкуСДатойToolStripMenuItem.Name = "заметкуСДатойToolStripMenuItem";
-            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.заметкуСДатойToolStripMenuItem.Text = "Заметку с датой";
             // 
             // удалитьПросроченныеToolStripMenuItem
@@ -89,6 +89,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(884, 661);
