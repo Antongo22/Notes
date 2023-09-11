@@ -21,7 +21,7 @@ namespace Notes
 
         void LoadBase()
         {
-            string query = "SELECT [name], [path] FROM [Notes]";
+            string query = "SELECT [Id], [name], [path] FROM [Notes]";
             SqlCommand command = new SqlCommand(query, sqlConnection);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -32,12 +32,13 @@ namespace Notes
 
             while (reader.Read())
             {
+                int recordId = (int)reader["Id"];
                 string name = reader["name"].ToString();
                 string path = reader["path"].ToString();
 
                 GroupBox groupBox = new GroupBox();
                 groupBox.Location = new Point(x, y);
-                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 20);
+                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 60);
                 groupBox.Text = name;
 
                 RichTextBox textBox = new RichTextBox();
@@ -49,8 +50,19 @@ namespace Notes
                 textBox.ReadOnly = true;
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
 
+                Button deleteButton = new Button();
+                deleteButton.Location = new Point(10, textBoxHeight + 30);
+                deleteButton.Size = new Size(textBoxWidth, 30);
+                deleteButton.Text = "Удалить";
+                deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
+                deleteButton.Click += DeleteRecordAndFile;
+                deleteButton.BringToFront();
+
                 groupBox.Controls.Add(textBox);
+                groupBox.Controls.Add(deleteButton);
                 this.Controls.Add(groupBox);
+
+                notesGroupBoxes.Add(groupBox); // Добавляем созданный GroupBox в список
 
                 x += groupBox.Width + 10;
 
@@ -62,6 +74,64 @@ namespace Notes
             }
 
             reader.Close();
+        }
+
+
+        private void DeleteRecordAndFile(object sender, EventArgs e)
+        {
+            if (sender is Button deleteButton && deleteButton.Tag is int recordId)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Удаление файла
+                    DeleteFileFromDataFolder(recordId);
+
+                    // Удаление записи из базы данных
+                    DeleteRecordFromDatabaseN(recordId);                  
+
+                    // Обновление интерфейса
+                    RefreshLoadBase();
+                }
+            }
+        }
+
+        private void DeleteRecordFromDatabaseN(int recordId)
+        {
+            string deleteQuery = $"DELETE FROM [Notes] WHERE [Id] = @RecordId";
+            SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
+            deleteCommand.Parameters.AddWithValue("@RecordId", recordId);
+            deleteCommand.ExecuteNonQuery();
+        }
+
+        private void DeleteFileFromDataFolder(int recordId)
+        {
+            string query = $"SELECT [path] FROM [Notes] WHERE [Id] = @RecordId";
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.AddWithValue("@RecordId", recordId);
+            string path = command.ExecuteScalar()?.ToString();
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                string filePath = Path.Combine("data", path);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
+        private void RefreshLoadBase()
+        {
+            foreach (var groupBox in notesGroupBoxes)
+            {
+                // Удаляем GroupBox из формы
+                Controls.Remove(groupBox);
+            }
+
+            // Очищаем список GroupBox'ов
+            notesGroupBoxes.Clear();
+
+            LoadBase();
         }
 
         void LoadDataBase()
