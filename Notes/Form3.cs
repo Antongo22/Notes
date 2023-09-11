@@ -145,6 +145,10 @@ namespace Notes
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("Заполнитевсе данные!");
+            }
         }
 
         private void Form3_Load(object sender, EventArgs e)
