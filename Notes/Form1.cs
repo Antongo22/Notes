@@ -55,7 +55,7 @@ namespace Notes
                 deleteButton.Size = new Size(textBoxWidth / 2 - 10, 30);
                 deleteButton.Text = "Удалить";
                 deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                deleteButton.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+                deleteButton.Click += DeleteRecordAndFile; // Добавляем обработчик события для кнопки "Удалить"
 
 
 
@@ -309,7 +309,11 @@ namespace Notes
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            Form3 form3 = new Form3(false);
+            form3.Text = "Создание заметки";
+            form3.ShowDialog();
+            LoadBase();
+            LoadDataBase();
         }
 
         private void заметкуСДатойToolStripMenuItem_Click(object sender, EventArgs e)
