@@ -51,15 +51,25 @@ namespace Notes
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
 
                 Button deleteButton = new Button();
-                deleteButton.Location = new Point(10, textBoxHeight + 30);
-                deleteButton.Size = new Size(textBoxWidth, 30);
+                deleteButton.Location = new Point(textBoxWidth / 2 + 15, textBoxHeight + 30);
+                deleteButton.Size = new Size(textBoxWidth / 2 - 10, 30);
                 deleteButton.Text = "Удалить";
                 deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                deleteButton.Click += DeleteRecordAndFile;
-                deleteButton.BringToFront();
+                deleteButton.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+
+
+
+                Button change = new Button();
+                change.Location = new Point(15, textBoxHeight + 30);
+                change.Size = new Size(textBoxWidth / 2 - 10, 30);
+                change.Text = "Изменить";
+                change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
+                //change.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+
 
                 groupBox.Controls.Add(textBox);
                 groupBox.Controls.Add(deleteButton);
+                groupBox.Controls.Add(change);
                 this.Controls.Add(groupBox);
 
                 notesGroupBoxes.Add(groupBox); // Добавляем созданный GroupBox в список
@@ -173,14 +183,23 @@ namespace Notes
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
 
                 Button deleteButton = new Button();
-                deleteButton.Location = new Point(10, textBoxHeight + 30);
-                deleteButton.Size = new Size(textBoxWidth, 30);
+                deleteButton.Location = new Point(textBoxWidth / 2 + 15, textBoxHeight + 30);
+                deleteButton.Size = new Size(textBoxWidth / 2 - 10, 30);
                 deleteButton.Text = "Удалить";
                 deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
                 deleteButton.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
 
+                Button change = new Button();
+                change.Location = new Point(15, textBoxHeight + 30);
+                change.Size = new Size(textBoxWidth / 2 - 10, 30);
+                change.Text = "Изменить";
+                change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
+                //change.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+
+
                 groupBox.Controls.Add(textBox);
                 groupBox.Controls.Add(deleteButton);
+                groupBox.Controls.Add(change);
                 Controls.Add(groupBox);
 
                 dataGroupBoxes.Add(groupBox); // Добавляем созданный GroupBox в список
