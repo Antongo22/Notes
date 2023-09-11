@@ -69,15 +69,16 @@
             // заметкуToolStripMenuItem
             // 
             this.заметкуToolStripMenuItem.Name = "заметкуToolStripMenuItem";
-            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.заметкуToolStripMenuItem.Text = "Заметку";
             this.заметкуToolStripMenuItem.Click += new System.EventHandler(this.заметкуToolStripMenuItem_Click);
             // 
             // заметкуСДатойToolStripMenuItem
             // 
             this.заметкуСДатойToolStripMenuItem.Name = "заметкуСДатойToolStripMenuItem";
-            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.заметкуСДатойToolStripMenuItem.Text = "Заметку с датой";
+            this.заметкуСДатойToolStripMenuItem.Click += new System.EventHandler(this.заметкуСДатойToolStripMenuItem_Click);
             // 
             // удалитьПросроченныеToolStripMenuItem
             // 

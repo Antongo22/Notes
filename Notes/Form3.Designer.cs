@@ -34,6 +34,7 @@
             this.textBoxText = new System.Windows.Forms.TextBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.labelWarning = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -79,7 +80,7 @@
             this.labelWarning.AutoSize = true;
             this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelWarning.Location = new System.Drawing.Point(631, 216);
+            this.labelWarning.Location = new System.Drawing.Point(631, 346);
             this.labelWarning.Name = "labelWarning";
             this.labelWarning.Size = new System.Drawing.Size(141, 40);
             this.labelWarning.TabIndex = 4;
@@ -88,11 +89,21 @@
             this.labelWarning.Visible = false;
             this.labelWarning.Click += new System.EventHandler(this.labelWarning_Click);
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(635, 37);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(137, 20);
+            this.dateTimePicker1.TabIndex = 5;
+            this.dateTimePicker1.Value = new System.DateTime(2023, 9, 11, 9, 55, 10, 0);
+            this.dateTimePicker1.Visible = false;
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.labelWarning);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxText);
@@ -103,6 +114,7 @@
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "Form3";
             this.Text = "Создать заметку";
+            this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -115,5 +127,6 @@
         private System.Windows.Forms.TextBox textBoxText;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label labelWarning;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }

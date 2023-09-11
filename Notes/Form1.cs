@@ -80,7 +80,16 @@ namespace Notes
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form3 form3 = new Form3();
+            Form3 form3 = new Form3(false);
+            form3.Text = "Создание заметки";
+            form3.ShowDialog();
+            LoadBase();
+        }
+
+        private void заметкуСДатойToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3(true);
+            form3.Text = "Создание заметки с датой";
             form3.ShowDialog();
             LoadBase();
         }

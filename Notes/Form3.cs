@@ -15,8 +15,10 @@ namespace Notes
 {
     public partial class Form3 : Form
     {
-        public Form3()
+        bool isDate;
+        public Form3(bool isDate)
         {
+            this.isDate = isDate;
             InitializeComponent();
         }
 
@@ -27,7 +29,7 @@ namespace Notes
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text))
+            if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text) && !isDate)
             {
                 // SQL-запрос INSERT
                 string insertQuery = $"INSERT INTO Notes (name, path) VALUES (N'{textBoxName.Text}', N''); SELECT SCOPE_IDENTITY();";
@@ -71,12 +73,22 @@ namespace Notes
                         MessageBox.Show("Произошла ошибка: " + ex.Message);
                     }
                 }
+            }       
+            else if(!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text) && isDate)
+            {
+                MessageBox.Show(dateTimePicker1.Value.ToString());
             }
-            
-        
             else
             {
                 labelWarning.Visible = true;
+            }
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            if (isDate)
+            {
+                dateTimePicker1.Visible = true;
             }
         }
     }
