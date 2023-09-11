@@ -35,6 +35,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.buttonCh = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -91,11 +92,23 @@
             this.dateTimePicker2.TabIndex = 6;
             this.dateTimePicker2.Visible = false;
             // 
+            // buttonCh
+            // 
+            this.buttonCh.Location = new System.Drawing.Point(663, 426);
+            this.buttonCh.Name = "buttonCh";
+            this.buttonCh.Size = new System.Drawing.Size(100, 23);
+            this.buttonCh.TabIndex = 7;
+            this.buttonCh.Text = "Изменить";
+            this.buttonCh.UseVisualStyleBackColor = true;
+            this.buttonCh.Visible = false;
+            this.buttonCh.Click += new System.EventHandler(this.buttonCh_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.buttonCh);
             this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.buttonSave);
@@ -121,5 +134,6 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Button buttonCh;
     }
 }

@@ -16,9 +16,15 @@ namespace Notes
     public partial class Form3 : Form
     {
         bool isDate;
-        public Form3(bool isDate)
+        bool change;
+        int id;
+
+        public Form3(bool isDate, bool change = false, int id = 0)
         {
             this.isDate = isDate;
+            this.change = change;
+            this.id = id;
+
             InitializeComponent();
         }
 
@@ -151,6 +157,83 @@ namespace Notes
                 dateTimePicker1.Format = DateTimePickerFormat.Time;
                 dateTimePicker1.ShowUpDown = true;
             }
+            if (change)
+            {
+                buttonSave.Visible = false;
+                buttonCh.Visible = true;
+
+                if (isDate)
+                {
+                    string query = "SELECT [name] FROM [NotesDate] WHERE [Id] = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, Form1.sqlConnection))
+                    {
+                        // Добавляем параметр @Id в команду и устанавливаем его значение
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        // Выполняем запрос и получаем результат
+                        textBoxName.Text = command.ExecuteScalar()?.ToString();
+                    }
+
+                    query = "SELECT [path] FROM [NotesDate] WHERE [Id] = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, Form1.sqlConnection))
+                    {
+                        // Добавляем параметр @Id в команду и устанавливаем его значение
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        // Выполняем запрос и получаем результат
+                        string path = command.ExecuteScalar()?.ToString();
+                        textBoxText.Text = new Data(path).GetAllText();
+                    }
+
+
+                    query = $"SELECT [date] FROM [NotesDate] WHERE [Id] = {id}";
+                    SqlCommand command_ = new SqlCommand(query, Form1.sqlConnection);
+
+                    // Выполнить запрос и получить результат
+                    DateTime resultDateTime;
+                   
+                    object result = command_.ExecuteScalar();
+                    
+                    resultDateTime = (DateTime)result;
+
+                    dateTimePicker2.Value = resultDateTime.Date; // Устанавливаем только дату
+                    dateTimePicker1.Value = resultDateTime; // Устанавливаем дату и время
+                }
+                else
+                {
+                    string query = "SELECT [name] FROM [Notes] WHERE [Id] = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, Form1.sqlConnection))
+                    {
+                        // Добавляем параметр @Id в команду и устанавливаем его значение
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        // Выполняем запрос и получаем результат
+                        textBoxName.Text = command.ExecuteScalar()?.ToString();
+                    }
+
+                    query = "SELECT [path] FROM [Notes] WHERE [Id] = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, Form1.sqlConnection))
+                    {
+                        // Добавляем параметр @Id в команду и устанавливаем его значение
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        // Выполняем запрос и получаем результат
+                        string path = command.ExecuteScalar()?.ToString();
+                        textBoxText.Text = new Data(path).GetAllText();
+                    }
+
+                }
+
+            }
+        }
+
+        private void buttonCh_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

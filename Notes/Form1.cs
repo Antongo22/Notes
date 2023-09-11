@@ -64,7 +64,10 @@ namespace Notes
                 change.Size = new Size(textBoxWidth / 2 - 10, 30);
                 change.Text = "Изменить";
                 change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                //change.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+                change.Click += (sender, e) =>
+                {
+                    Change(false, recordId); // Вызываем метод Change с нужными параметрами
+                };
 
 
                 groupBox.Controls.Add(textBox);
@@ -85,7 +88,6 @@ namespace Notes
 
             reader.Close();
         }
-
 
         private void DeleteRecordAndFile(object sender, EventArgs e)
         {
@@ -194,8 +196,10 @@ namespace Notes
                 change.Size = new Size(textBoxWidth / 2 - 10, 30);
                 change.Text = "Изменить";
                 change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                //change.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
-
+                change.Click += (sender, e) =>
+                {
+                    Change(true, recordId); // Вызываем метод Change с нужными параметрами
+                };
 
                 groupBox.Controls.Add(textBox);
                 groupBox.Controls.Add(deleteButton);
@@ -276,7 +280,14 @@ namespace Notes
             LoadDataBase();
         }
 
-
+        private void Change(bool isDate, int id)
+        {
+            Form3 form3 = new Form3(isDate, true, id);
+            form3.Text = "Изминение заметки";
+            form3.ShowDialog();
+            LoadBase();
+            LoadDataBase();
+        }
 
         public Form1()
         {
@@ -298,11 +309,7 @@ namespace Notes
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form3 form3 = new Form3(false);
-            form3.Text = "Создание заметки";
-            form3.ShowDialog();
-            LoadBase();
-            LoadDataBase();
+            
         }
 
         private void заметкуСДатойToolStripMenuItem_Click(object sender, EventArgs e)
