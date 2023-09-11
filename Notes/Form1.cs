@@ -34,15 +34,15 @@ namespace Notes
                 string path = reader["path"].ToString();
 
                 GroupBox groupBox = new GroupBox();
-                groupBox.Location = new System.Drawing.Point(x, y);
-                groupBox.Size = new System.Drawing.Size(textBoxWidth + 20, textBoxHeight + 20);
+                groupBox.Location = new Point(x, y);
+                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 20);
                 groupBox.Text = name;
 
                 RichTextBox textBox = new RichTextBox();
-                textBox.Location = new System.Drawing.Point(10, 20);
-                textBox.Size = new System.Drawing.Size(textBoxWidth, textBoxHeight);
+                textBox.Location = new Point(10, 20);
+                textBox.Size = new Size(textBoxWidth, textBoxHeight);
                 textBox.Multiline = true;
-                textBox.Font = new System.Drawing.Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
+                textBox.Font = new Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
                 textBox.Text = new Data(path).GetAllText();
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
 
