@@ -38,7 +38,7 @@ namespace Notes
 
                 GroupBox groupBox = new GroupBox();
                 groupBox.Location = new Point(x, y);
-                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 60);
+                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 65);
                 groupBox.Text = name;
 
                 RichTextBox textBox = new RichTextBox();
@@ -154,7 +154,7 @@ namespace Notes
 
                 GroupBox groupBox = new GroupBox();
                 groupBox.Location = new Point(x, y);
-                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 60);
+                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 65);
                 groupBox.Text = name + "  " + date.ToString();
 
                 // Проверяем, просрочена ли дата
