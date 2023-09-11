@@ -44,7 +44,7 @@
             this.файлToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(884, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(944, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -69,14 +69,14 @@
             // заметкуToolStripMenuItem
             // 
             this.заметкуToolStripMenuItem.Name = "заметкуToolStripMenuItem";
-            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.заметкуToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.заметкуToolStripMenuItem.Text = "Заметку";
             this.заметкуToolStripMenuItem.Click += new System.EventHandler(this.заметкуToolStripMenuItem_Click);
             // 
             // заметкуСДатойToolStripMenuItem
             // 
             this.заметкуСДатойToolStripMenuItem.Name = "заметкуСДатойToolStripMenuItem";
-            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.заметкуСДатойToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.заметкуСДатойToolStripMenuItem.Text = "Заметку с датой";
             this.заметкуСДатойToolStripMenuItem.Click += new System.EventHandler(this.заметкуСДатойToolStripMenuItem_Click);
             // 
@@ -93,12 +93,12 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(884, 661);
+            this.ClientSize = new System.Drawing.Size(944, 661);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(900, 700);
-            this.MinimumSize = new System.Drawing.Size(900, 700);
+            this.MaximumSize = new System.Drawing.Size(960, 700);
+            this.MinimumSize = new System.Drawing.Size(960, 700);
             this.Name = "Form1";
             this.Text = "Главная";
             this.Load += new System.EventHandler(this.Form1_Load);

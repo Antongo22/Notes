@@ -61,6 +61,54 @@ namespace Notes
             reader.Close();
         }
 
+        void LoadDataBase()
+        {
+            string query = "SELECT [name], [date], [path] FROM [NotesDate] ORDER BY [date] ASC"; // Сортировка по дате в порядке возрастания
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            SqlDataReader reader = command.ExecuteReader();
+
+            int x = 470;
+            int y = 30;
+            int textBoxWidth = 200;
+            int textBoxHeight = 100;
+
+            while (reader.Read())
+            {
+                string name = reader["name"].ToString();
+                string path = reader["path"].ToString();
+                string date = reader["date"].ToString();
+
+                GroupBox groupBox = new GroupBox();
+                groupBox.Location = new Point(x, y);
+                groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 20);
+                groupBox.Text = name + "  " + date;
+
+                RichTextBox textBox = new RichTextBox();
+                textBox.Location = new Point(10, 20);
+                textBox.Size = new Size(textBoxWidth, textBoxHeight);
+                textBox.Multiline = true;
+                textBox.Font = new Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
+                textBox.Text = new Data(path).GetAllText();
+                textBox.ReadOnly = true;
+                textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
+
+                groupBox.Controls.Add(textBox);
+                Controls.Add(groupBox);
+
+                x += groupBox.Width + 10;
+
+                if (x + groupBox.Width > 950)
+                {
+                    x = 470;
+                    y += groupBox.Height + 10;
+                }
+            }
+
+            reader.Close();
+        }
+
+
+
         public Form1()
         {
             InitializeComponent();
@@ -76,6 +124,7 @@ namespace Notes
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Data"].ConnectionString);
             sqlConnection.Open();
             LoadBase();
+            LoadDataBase();
         }
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
@@ -84,6 +133,7 @@ namespace Notes
             form3.Text = "Создание заметки";
             form3.ShowDialog();
             LoadBase();
+            LoadDataBase();
         }
 
         private void заметкуСДатойToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,6 +142,7 @@ namespace Notes
             form3.Text = "Создание заметки с датой";
             form3.ShowDialog();
             LoadBase();
+            LoadDataBase();
         }
     }
 }
