@@ -285,6 +285,8 @@ namespace Notes
             Form3 form3 = new Form3(isDate, true, id);
             form3.Text = "Изминение заметки";
             form3.ShowDialog();
+            RefreshInterface();
+            RefreshLoadBase();
             LoadBase();
             LoadDataBase();
         }
