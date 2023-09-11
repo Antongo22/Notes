@@ -79,7 +79,7 @@ namespace Notes
                 DateTime date1 = dateTimePicker2.Value;
                 DateTime date2 = dateTimePicker1.Value;
 
-                DateTime combinedDateTime = new DateTime(date1.Year, date1.Month, date1.Day, date2.Hour, date2.Minute, 0);
+                DateTime combinedDateTime = new DateTime(date1.Year, date1.Month, date1.Day, date2.Hour, date2.Minute, date2.Minute);
 
                 if (combinedDateTime < DateTime.Now)
                 {
