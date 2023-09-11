@@ -44,6 +44,7 @@ namespace Notes
                 textBox.Multiline = true;
                 textBox.Font = new Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
                 textBox.Text = new Data(path).GetAllText();
+                textBox.ReadOnly = true;
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
 
                 groupBox.Controls.Add(textBox);
