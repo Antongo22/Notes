@@ -35,5 +35,10 @@ namespace Notes
         /// </summary>
         /// <returns>Информация из базы ввиде массива строк</returns>
         public string GetAllText() => File.ReadAllText(fileName);
+
+        /// <summary>
+        /// Очистка текста
+        /// </summary>
+        public void Clear() => File.Create(fileName).Close();
     }
 }

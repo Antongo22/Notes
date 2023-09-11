@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -93,7 +94,6 @@ namespace Notes
                     return;
                 }
 
-                // SQL-запрос INSERT
                 // SQL-запрос INSERT
                 string insertQuery = $"INSERT INTO NotesDate (name, [date], path) VALUES (N'{textBoxName.Text}', '{combinedDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', N'')";
 
@@ -237,7 +237,70 @@ namespace Notes
 
         private void buttonCh_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text) && !isDate)
+            {
+                string updateQuery = $"UPDATE [Notes] SET [name] = N'{textBoxName.Text}' WHERE [Id] = {id}";
 
+                using (SqlCommand updateCommand = new SqlCommand(updateQuery, Form1.sqlConnection))
+                {
+                    try
+                    {
+                        int rowsAffected = updateCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            // Запрос для получения path по id
+                            string pathQuery = $"SELECT [path] FROM [Notes] WHERE [Id] = {id}";
+
+                            using (SqlCommand pathCommand = new SqlCommand(pathQuery, Form1.sqlConnection))
+                            {
+                                try
+                                {
+                                    string path = pathCommand.ExecuteScalar() as string;
+
+
+                                    // Очистить содержимое файла по указанному path
+                                    new Data(path).Clear();
+
+                                    // Добавить новое содержимое из textBoxText.Text
+                                    new Data(path).Add(textBoxText.Text);
+
+                                    MessageBox.Show("Запись успешно обновлена в таблице и файле.");
+                                    Close();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Произошла ошибка при обновлении файла: " + ex.Message);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Запись с указанным id не найдена.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Произошла ошибка при обновлении записи: " + ex.Message);
+                    }
+                }
+            }
+            else if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text) && isDate)
+            {
+                DateTime date1 = dateTimePicker2.Value;
+                DateTime date2 = dateTimePicker1.Value;
+
+                DateTime combinedDateTime = new DateTime(date1.Year, date1.Month, date1.Day, date2.Hour, date2.Minute, date2.Minute);
+
+                if (combinedDateTime < DateTime.Now)
+                {
+                    MessageBox.Show("Нельзя вводить дату и время, которые уже прошли!");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Заполнитевсе данные!");
+            }
         }
     }
 }
