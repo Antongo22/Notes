@@ -197,9 +197,9 @@ namespace Notes
 
                     // Выполнить запрос и получить результат
                     DateTime resultDateTime;
-                   
+
                     object result = command_.ExecuteScalar();
-                    
+
                     resultDateTime = (DateTime)result;
 
                     dateTimePicker2.Value = resultDateTime.Date; // Устанавливаем только дату
@@ -286,15 +286,57 @@ namespace Notes
             }
             else if (!string.IsNullOrEmpty(textBoxName.Text) && !string.IsNullOrEmpty(textBoxText.Text) && isDate)
             {
+                string newName = textBoxName.Text;
                 DateTime date1 = dateTimePicker2.Value;
                 DateTime date2 = dateTimePicker1.Value;
 
-                DateTime combinedDateTime = new DateTime(date1.Year, date1.Month, date1.Day, date2.Hour, date2.Minute, date2.Minute);
+                DateTime combinedDateTime = new DateTime(date1.Year, date1.Month, date1.Day, date2.Hour, date2.Minute, date2.Second);
 
                 if (combinedDateTime < DateTime.Now)
                 {
                     MessageBox.Show("Нельзя вводить дату и время, которые уже прошли!");
                     return;
+                }
+
+                try
+                {
+                    // Обновление данных в базе данных
+                    string updateQuery = "UPDATE NotesDate SET name = @name, date = @date WHERE id = @id";
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, Form1.sqlConnection))
+                    {
+                        cmd.Parameters.AddWithValue("@name", newName);
+                        cmd.Parameters.AddWithValue("@date", combinedDateTime);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Получение path по id
+                    string selectPathQuery = "SELECT path FROM NotesDate WHERE id = @id";
+                    string path = string.Empty;
+                    using (SqlCommand cmd = new SqlCommand(selectPathQuery, Form1.sqlConnection))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            path = reader["path"].ToString();
+                            reader.Close(); // Закройте DataReader после использования его данных
+
+                            // Очистка содержимого файла по указанному path
+                            new Data(path).Clear();
+
+                            // Добавление нового содержимого из textBoxText.Text
+                            new Data(path).Add(textBoxText.Text);
+                        }
+                    }
+
+                    MessageBox.Show("Запись успешно обновлена в таблице и файле.");
+                    Close();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
                 }
             }
             else
@@ -303,4 +345,5 @@ namespace Notes
             }
         }
     }
+    
 }
