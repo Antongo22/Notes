@@ -154,7 +154,7 @@ namespace Notes
 
             int x = 470;
             int y = 30;
-            int textBoxWidth = 200;
+            int textBoxWidth = 205;
             int textBoxHeight = 100;
 
             while (reader.Read())
@@ -280,13 +280,33 @@ namespace Notes
             LoadDataBase();
         }
 
+        void RefreshAll()
+        {
+            foreach (var groupBox in dataGroupBoxes)
+            {
+                // Удаляем GroupBox из формы
+                Controls.Remove(groupBox);
+            }
+
+            // Очищаем список GroupBox'ов
+            dataGroupBoxes.Clear();
+
+            foreach (var groupBox in notesGroupBoxes)
+            {
+                // Удаляем GroupBox из формы
+                Controls.Remove(groupBox);
+            }
+
+            // Очищаем список GroupBox'ов
+            notesGroupBoxes.Clear();
+        }
+
         private void Change(bool isDate, int id)
         {
             Form3 form3 = new Form3(isDate, true, id);
             form3.Text = "Изминение заметки";
             form3.ShowDialog();
-            RefreshInterface();
-            RefreshLoadBase();
+            RefreshAll();
             LoadBase();
             LoadDataBase();
         }
