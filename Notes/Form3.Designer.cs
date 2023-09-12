@@ -33,8 +33,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxText = new System.Windows.Forms.TextBox();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.labelWarning = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.buttonCh = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -59,7 +60,7 @@
             this.textBoxText.Multiline = true;
             this.textBoxText.Name = "textBoxText";
             this.textBoxText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxText.Size = new System.Drawing.Size(608, 409);
+            this.textBoxText.Size = new System.Drawing.Size(644, 409);
             this.textBoxText.TabIndex = 2;
             // 
             // buttonSave
@@ -72,39 +73,44 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // labelWarning
-            // 
-            this.labelWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelWarning.AutoSize = true;
-            this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelWarning.Location = new System.Drawing.Point(631, 346);
-            this.labelWarning.Name = "labelWarning";
-            this.labelWarning.Size = new System.Drawing.Size(141, 40);
-            this.labelWarning.TabIndex = 4;
-            this.labelWarning.Text = "Заполните все \r\nданные!";
-            this.labelWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelWarning.Visible = false;
-            this.labelWarning.Click += new System.EventHandler(this.labelWarning_Click);
-            // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(635, 37);
+            this.dateTimePicker1.CustomFormat = "";
+            this.dateTimePicker1.Location = new System.Drawing.Point(646, 12);
+            this.dateTimePicker1.MinDate = new System.DateTime(2023, 9, 11, 0, 0, 0, 0);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(137, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(117, 20);
             this.dateTimePicker1.TabIndex = 5;
             this.dateTimePicker1.Value = new System.DateTime(2023, 9, 11, 9, 55, 10, 0);
             this.dateTimePicker1.Visible = false;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(506, 12);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(134, 20);
+            this.dateTimePicker2.TabIndex = 6;
+            this.dateTimePicker2.Visible = false;
+            // 
+            // buttonCh
+            // 
+            this.buttonCh.Location = new System.Drawing.Point(663, 426);
+            this.buttonCh.Name = "buttonCh";
+            this.buttonCh.Size = new System.Drawing.Size(100, 23);
+            this.buttonCh.TabIndex = 7;
+            this.buttonCh.Text = "Изменить";
+            this.buttonCh.UseVisualStyleBackColor = true;
+            this.buttonCh.Visible = false;
+            this.buttonCh.Click += new System.EventHandler(this.buttonCh_Click);
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.buttonCh);
+            this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.labelWarning);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxText);
             this.Controls.Add(this.label1);
@@ -126,7 +132,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxText;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Label labelWarning;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Button buttonCh;
     }
 }
