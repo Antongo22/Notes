@@ -85,6 +85,7 @@
             this.удалитьПросроченныеToolStripMenuItem.Name = "удалитьПросроченныеToolStripMenuItem";
             this.удалитьПросроченныеToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.удалитьПросроченныеToolStripMenuItem.Text = "Удалить просроченные";
+            this.удалитьПросроченныеToolStripMenuItem.Click += new System.EventHandler(this.удалитьПросроченныеToolStripMenuItem_Click);
             // 
             // Form1
             // 

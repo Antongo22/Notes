@@ -331,5 +331,50 @@ namespace Notes
             LoadBase();
             LoadDataBase();
         }
+        private void DeleteExpiredRecords()
+        {
+            string selectQuery = "SELECT [Id], [path] FROM [NotesDate] WHERE [date] < GETDATE()";
+            SqlCommand selectCommand = new SqlCommand(selectQuery, sqlConnection);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+
+            // Создаем список для хранения ID записей и связанных с ними путей к файлам
+            List<Tuple<int, string>> recordsToDelete = new List<Tuple<int, string>>();
+
+            while (reader.Read())
+            {
+                int recordId = (int)reader["Id"];
+                string filePath = Path.Combine("data", reader["path"].ToString());
+
+                recordsToDelete.Add(Tuple.Create(recordId, filePath));
+            }
+
+            reader.Close();
+
+            // Удаление записей и связанных файлов
+            foreach (var recordToDelete in recordsToDelete)
+            {
+                int recordId = recordToDelete.Item1;
+                string filePath = recordToDelete.Item2;
+
+                // Удаляем запись из базы данных
+                DeleteRecordFromDatabase(recordId);
+
+                // Удаляем файл, если он существует
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
+        private void удалитьПросроченныеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите удалить просроченные записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                DeleteExpiredRecords();
+                RefreshInterface(); // Обновите интерфейс после удаления
+                LoadDataBase(); // Загрузите данные снова после удаления
+            }
+        }
     }
 }
