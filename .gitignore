@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /Notes/Database1.mdf
 /Notes/Database1_log.ldf
+/Notes/App.config
