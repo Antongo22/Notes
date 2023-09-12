@@ -41,7 +41,7 @@ namespace Notes
                 GroupBox groupBox = new GroupBox();
                 groupBox.Location = new Point(x, y);
                 groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 65);
-                groupBox.Text = name;
+                groupBox.Text = name.Length > 25 ? name.Substring(0, 22) + "..." : name;
 
                 RichTextBox textBox = new RichTextBox();
                 textBox.Location = new Point(10, 20);
@@ -169,7 +169,7 @@ namespace Notes
                 GroupBox groupBox = new GroupBox();
                 groupBox.Location = new Point(x, y);
                 groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 65);
-                groupBox.Text = name + "  " + date.ToString();
+                groupBox.Text = groupBox.Text = (name.Length > 15 ? name.Substring(0, 12) + "..." : name + "  ") + date.ToString();
 
                 // Проверяем, просрочена ли дата
                 if (date < DateTime.Now)
