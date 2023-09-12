@@ -18,6 +18,8 @@ namespace Notes
         public static SqlConnection sqlConnection;
         private List<GroupBox> dataGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов
         private List<GroupBox> notesGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов для таблицы [Notes]
+        private List<int> expiredRecordNotificationsShown = new List<int>();
+
 
         void LoadBase()
         {
@@ -302,12 +304,40 @@ namespace Notes
             sqlConnection.Close();
         }
 
+        private Timer dataLoadTimer;
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Инициализация таймера
+            dataLoadTimer = new Timer();
+            dataLoadTimer.Interval = 60000; // Интервал в миллисекундах (1 минута)
+            dataLoadTimer.Tick += DataLoadTimer_Tick;
+            dataLoadTimer.Start(); // Запуск таймера
+
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Data"].ConnectionString);
             sqlConnection.Open();
             LoadBase();
             LoadDataBase();
+            CheckAndShowExpiredRecords();
+        }
+
+        private void CheckAndShowExpiredRecords()
+        {
+            string selectQuery = "SELECT COUNT(*) FROM [NotesDate] WHERE [date] < GETDATE()";
+            SqlCommand selectCommand = new SqlCommand(selectQuery, sqlConnection);
+            int expiredRecordCount = (int)selectCommand.ExecuteScalar();
+
+            if (expiredRecordCount > 0)
+            {
+                MessageBox.Show("Обнаружены просроченные записи.", "Просроченные записи", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void DataLoadTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshInterface();
+            LoadDataBase();
+            CheckAndShowExpiredRecords();
         }
 
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
@@ -347,7 +377,7 @@ namespace Notes
 
                 recordsToDelete.Add(Tuple.Create(recordId, filePath));
             }
-
+            
             reader.Close();
 
             // Удаление записей и связанных файлов
