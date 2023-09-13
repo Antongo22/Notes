@@ -402,6 +402,12 @@ namespace Notes
                 MessageBox.Show("Обнаружены просроченные записи.", "Просроченные записи", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            RefreshNotesDate();
+            LoadDataBase();
+        }
         #endregion
 
         #region Верхняя панель
@@ -435,6 +441,15 @@ namespace Notes
                 RefreshNotesDate(); // Обновите интерфейс после удаления
                 LoadDataBase(); // Загрузите данные снова после удаления
             }
+        }
+
+        private void сбросДатыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
+
+            dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
+
+            LoadDataBase();
         }
 
         private void DeleteExpiredRecords()
@@ -474,18 +489,5 @@ namespace Notes
         }
         #endregion
 
-        private void сбросДатыToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
-
-            dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
-
-            LoadDataBase();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            LoadDataBase();
-        }
     }
 }
