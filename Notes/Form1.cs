@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Notes
 {
@@ -94,10 +95,21 @@ namespace Notes
         /// <summary>
         /// Загрузка всех заметок c датой
         /// </summary>
-        void LoadDataBase()
+        void LoadDataBase(bool isDrop = false)
         {
-            DateTime startDate = dateTimePicker1.Value;
-            DateTime endDate = dateTimePicker2.Value;
+             DateTime startDate = dateTimePicker1.Value;
+             DateTime endDate = dateTimePicker2.Value;
+
+            //DateTime startDate = monthCalendar1.SelectionRange.Start;
+            //DateTime endDate = monthCalendar1.SelectionRange.End;
+            //endDate = endDate.Date.Add(new TimeSpan(23, 59, 59));
+
+            if (isDrop)
+            {
+                startDate = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
+                endDate = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
+            }
+
 
             string query = "SELECT [Id], [name], [date], [path] FROM [NotesDate] WHERE [date] BETWEEN @StartDate AND @EndDate ORDER BY [date] ASC";
             SqlCommand command = new SqlCommand(query, sqlConnection);
@@ -107,7 +119,7 @@ namespace Notes
             SqlDataReader reader = command.ExecuteReader();
 
             int x = 470;
-            int y = 60;
+            int y = 250;
             int textBoxWidth = 205;
             int textBoxHeight = 100;
 
@@ -445,11 +457,7 @@ namespace Notes
 
         private void сбросДатыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
-
-            dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
-
-            LoadDataBase();
+            LoadDataBase(true);
         }
 
         private void DeleteExpiredRecords()
