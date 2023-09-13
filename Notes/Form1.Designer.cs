@@ -35,13 +35,14 @@
             this.заметкуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.заметкуСДатойToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьПросроченныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сбросДатыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.сбросДатыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,16 +96,23 @@
             this.удалитьПросроченныеToolStripMenuItem.Text = "Удалить просроченные";
             this.удалитьПросроченныеToolStripMenuItem.Click += new System.EventHandler(this.удалитьПросроченныеToolStripMenuItem_Click);
             // 
+            // сбросДатыToolStripMenuItem
+            // 
+            this.сбросДатыToolStripMenuItem.Name = "сбросДатыToolStripMenuItem";
+            this.сбросДатыToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.сбросДатыToolStripMenuItem.Text = "Сброс даты";
+            this.сбросДатыToolStripMenuItem.Click += new System.EventHandler(this.сбросДатыToolStripMenuItem_Click);
+            // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(613, 27);
+            this.dateTimePicker1.Location = new System.Drawing.Point(618, 27);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(110, 20);
             this.dateTimePicker1.TabIndex = 1;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(745, 27);
+            this.dateTimePicker2.Location = new System.Drawing.Point(751, 27);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(110, 20);
             this.dateTimePicker2.TabIndex = 2;
@@ -112,7 +120,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(599, 30);
+            this.label1.Location = new System.Drawing.Point(602, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(13, 13);
             this.label1.TabIndex = 3;
@@ -121,18 +129,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(726, 30);
+            this.label2.Location = new System.Drawing.Point(729, 30);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(19, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "по";
-            // 
-            // сбросДатыToolStripMenuItem
-            // 
-            this.сбросДатыToolStripMenuItem.Name = "сбросДатыToolStripMenuItem";
-            this.сбросДатыToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.сбросДатыToolStripMenuItem.Text = "Сброс даты";
-            this.сбросДатыToolStripMenuItem.Click += new System.EventHandler(this.сбросДатыToolStripMenuItem_Click);
             // 
             // button1
             // 
@@ -146,9 +147,20 @@
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(613, 52);
+            this.monthCalendar1.Location = new System.Drawing.Point(643, 27);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 6;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(519, 29);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(77, 17);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Диапозон";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Form1
             // 
@@ -158,6 +170,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(944, 661);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -194,6 +207,7 @@
         private System.Windows.Forms.ToolStripMenuItem сбросДатыToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

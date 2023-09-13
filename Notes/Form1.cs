@@ -20,6 +20,7 @@ namespace Notes
         List<GroupBox> dataGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов
         List<GroupBox> notesGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов для таблицы [Notes]
         Timer dataLoadTimer;
+        bool isD;
 
         #region Вывод заметок
         /// <summary>
@@ -97,12 +98,19 @@ namespace Notes
         /// </summary>
         void LoadDataBase(bool isDrop = false)
         {
-            //DateTime startDate = dateTimePicker1.Value;
-            //DateTime endDate = dateTimePicker2.Value;
-
-            DateTime startDate = monthCalendar1.SelectionRange.Start;
-            DateTime endDate = monthCalendar1.SelectionRange.End;
-            endDate = endDate.Date.Add(new TimeSpan(23, 59, 59));
+            DateTime startDate;
+            DateTime endDate;
+            if (isD)
+            {
+                startDate = monthCalendar1.SelectionRange.Start;
+                endDate = monthCalendar1.SelectionRange.End;
+                endDate = endDate.Date.Add(new TimeSpan(23, 59, 59));
+            }
+            else
+            {
+                startDate = dateTimePicker1.Value;
+                endDate = dateTimePicker2.Value;
+            }
 
             if (isDrop)
             {
@@ -372,6 +380,19 @@ namespace Notes
             dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
             dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
 
+            isD = true;
+
+            if (isD)
+            {
+                dateTimePicker1.Visible = false;
+                dateTimePicker2.Visible = false;
+                label1.Visible = false;
+                label2.Visible = false;
+            }
+            else
+            {
+                monthCalendar1.Visible = false;
+            }
             // Инициализация таймера
             dataLoadTimer = new Timer();
             dataLoadTimer.Interval = 60000; // Интервал в миллисекундах (1 минута)
@@ -495,7 +516,30 @@ namespace Notes
                 }
             }
         }
-        #endregion
+# endregionj;
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                isD = false;
+                monthCalendar1.Visible = false;
+
+                dateTimePicker1.Visible = true;
+                dateTimePicker2.Visible = true;
+                label1.Visible = true;
+                label2.Visible = true;
+            }
+            else
+            {
+                isD = true;
+                dateTimePicker1.Visible = false;
+                dateTimePicker2.Visible = false;
+                label1.Visible = false;
+                label2.Visible = false;
+
+                monthCalendar1.Visible = true;
+            }
+        }
     }
 }
