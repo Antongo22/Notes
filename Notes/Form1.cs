@@ -16,11 +16,14 @@ namespace Notes
     public partial class Form1 : Form
     {
         public static SqlConnection sqlConnection;
-        private List<GroupBox> dataGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов
-        private List<GroupBox> notesGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов для таблицы [Notes]
-        private List<int> expiredRecordNotificationsShown = new List<int>();
+        List<GroupBox> dataGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов
+        List<GroupBox> notesGroupBoxes = new List<GroupBox>(); // Список для хранения созданных GroupBox'ов для таблицы [Notes]
+        Timer dataLoadTimer;
 
-
+        #region Вывод заметок
+        /// <summary>
+        /// Загрузка всех обычных заметок 
+        /// </summary>
         void LoadBase()
         {
             string query = "SELECT [Id], [name], [path] FROM [Notes]";
@@ -47,7 +50,7 @@ namespace Notes
                 textBox.Location = new Point(10, 20);
                 textBox.Size = new Size(textBoxWidth, textBoxHeight);
                 textBox.Multiline = true;
-                textBox.Font = new Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
+                textBox.Font = new Font(textBox.Font.FontFamily, 8); 
                 textBox.Text = new Data(path).GetAllText();
                 textBox.ReadOnly = true;
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
@@ -56,28 +59,25 @@ namespace Notes
                 deleteButton.Location = new Point(textBoxWidth / 2 + 15, textBoxHeight + 30);
                 deleteButton.Size = new Size(textBoxWidth / 2 - 10, 30);
                 deleteButton.Text = "Удалить";
-                deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                deleteButton.Click += DeleteRecordAndFile; // Добавляем обработчик события для кнопки "Удалить"
-
-
+                deleteButton.Tag = recordId; 
+                deleteButton.Click += DeleteButtonNotes;
 
                 Button change = new Button();
                 change.Location = new Point(15, textBoxHeight + 30);
                 change.Size = new Size(textBoxWidth / 2 - 10, 30);
                 change.Text = "Изменить";
-                change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
+                change.Tag = recordId; 
                 change.Click += (sender, e) =>
                 {
-                    Change(false, recordId); // Вызываем метод Change с нужными параметрами
+                    Change(false, recordId);
                 };
-
 
                 groupBox.Controls.Add(textBox);
                 groupBox.Controls.Add(deleteButton);
                 groupBox.Controls.Add(change);
                 this.Controls.Add(groupBox);
 
-                notesGroupBoxes.Add(groupBox); // Добавляем созданный GroupBox в список
+                notesGroupBoxes.Add(groupBox);
 
                 x += groupBox.Width + 10;
 
@@ -91,63 +91,9 @@ namespace Notes
             reader.Close();
         }
 
-        private void DeleteRecordAndFile(object sender, EventArgs e)
-        {
-            if (sender is Button deleteButton && deleteButton.Tag is int recordId)
-            {
-                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    // Удаление файла
-                    DeleteFileFromDataFolder(recordId);
-
-                    // Удаление записи из базы данных
-                    DeleteRecordFromDatabaseN(recordId);                  
-
-                    // Обновление интерфейса
-                    RefreshLoadBase();
-                }
-            }
-        }
-
-        private void DeleteRecordFromDatabaseN(int recordId)
-        {
-            string deleteQuery = $"DELETE FROM [Notes] WHERE [Id] = @RecordId";
-            SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
-            deleteCommand.Parameters.AddWithValue("@RecordId", recordId);
-            deleteCommand.ExecuteNonQuery();
-        }
-
-        private void DeleteFileFromDataFolder(int recordId)
-        {
-            string query = $"SELECT [path] FROM [Notes] WHERE [Id] = @RecordId";
-            SqlCommand command = new SqlCommand(query, sqlConnection);
-            command.Parameters.AddWithValue("@RecordId", recordId);
-            string path = command.ExecuteScalar()?.ToString();
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                string filePath = Path.Combine("data", path);
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                }
-            }
-        }
-
-        private void RefreshLoadBase()
-        {
-            foreach (var groupBox in notesGroupBoxes)
-            {
-                // Удаляем GroupBox из формы
-                Controls.Remove(groupBox);
-            }
-
-            // Очищаем список GroupBox'ов
-            notesGroupBoxes.Clear();
-
-            LoadBase();
-        }
-
+        /// <summary>
+        /// Загрузка всех заметок c датой
+        /// </summary>
         void LoadDataBase()
         {
             string query = "SELECT [Id], [name], [date], [path] FROM [NotesDate] ORDER BY [date] ASC"; // Сортировка по дате в порядке возрастания
@@ -171,17 +117,16 @@ namespace Notes
                 groupBox.Size = new Size(textBoxWidth + 20, textBoxHeight + 65);
                 groupBox.Text = groupBox.Text = (name.Length > 15 ? name.Substring(0, 12) + "..." : name + "  ") + date.ToString();
 
-                // Проверяем, просрочена ли дата
                 if (date < DateTime.Now)
                 {
-                    groupBox.BackColor = Color.Red; // Если просрочено, делаем фон красным
+                    groupBox.BackColor = Color.Red; 
                 }
 
                 RichTextBox textBox = new RichTextBox();
                 textBox.Location = new Point(10, 20);
                 textBox.Size = new Size(textBoxWidth, textBoxHeight);
                 textBox.Multiline = true;
-                textBox.Font = new Font(textBox.Font.FontFamily, 8); // Шрифт с меньшим размером
+                textBox.Font = new Font(textBox.Font.FontFamily, 8); 
                 textBox.Text = new Data(path).GetAllText();
                 textBox.ReadOnly = true;
                 textBox.ScrollBars = RichTextBoxScrollBars.Vertical;
@@ -190,17 +135,17 @@ namespace Notes
                 deleteButton.Location = new Point(textBoxWidth / 2 + 15, textBoxHeight + 30);
                 deleteButton.Size = new Size(textBoxWidth / 2 - 10, 30);
                 deleteButton.Text = "Удалить";
-                deleteButton.Tag = recordId; // Сохраняем Id записи как Tag кнопки
-                deleteButton.Click += DeleteButton_Click; // Добавляем обработчик события для кнопки "Удалить"
+                deleteButton.Tag = recordId;
+                deleteButton.Click += DeleteButtonNotesDate; 
 
                 Button change = new Button();
                 change.Location = new Point(15, textBoxHeight + 30);
                 change.Size = new Size(textBoxWidth / 2 - 10, 30);
                 change.Text = "Изменить";
-                change.Tag = recordId; // Сохраняем Id записи как Tag кнопки
+                change.Tag = recordId; 
                 change.Click += (sender, e) =>
                 {
-                    Change(true, recordId); // Вызываем метод Change с нужными параметрами
+                    Change(true, recordId); 
                 };
 
                 groupBox.Controls.Add(textBox);
@@ -208,13 +153,13 @@ namespace Notes
                 groupBox.Controls.Add(change);
                 Controls.Add(groupBox);
 
-                dataGroupBoxes.Add(groupBox); // Добавляем созданный GroupBox в список
+                dataGroupBoxes.Add(groupBox); 
 
                 x += groupBox.Width + 10;
 
-                if (x + groupBox.Width > this.Width) // Если выходит за границу формы
+                if (x + groupBox.Width > this.Width) 
                 {
-                    x = 470; // Начинаем снова с x = 470
+                    x = 470; 
                     y += groupBox.Height + 10;
                 }
             }
@@ -222,17 +167,96 @@ namespace Notes
             reader.Close();
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        #region методы LoadBase
+
+        /// <summary>
+        /// Кнопка удаления заметки для обычных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteButtonNotes(object sender, EventArgs e)
+        {
+            if (sender is Button deleteButton && deleteButton.Tag is int recordId)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Удаление файла
+                    DeleteFileNotes(recordId);
+
+                    // Удаление записи из базы данных
+                    DeleteDatabaseNotes(recordId);
+
+                    // Обновление интерфейса
+                    RefreshNotes();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаление записи из базы
+        /// </summary>
+        /// <param name="recordId"></param>
+        private void DeleteDatabaseNotes(int recordId)
+        {
+            string deleteQuery = $"DELETE FROM [Notes] WHERE [Id] = @RecordId";
+            SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
+            deleteCommand.Parameters.AddWithValue("@RecordId", recordId);
+            deleteCommand.ExecuteNonQuery();
+        }
+
+        private void DeleteFileNotes(int recordId)
+        {
+            string query = $"SELECT [path] FROM [Notes] WHERE [Id] = @RecordId";
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.AddWithValue("@RecordId", recordId);
+            string path = command.ExecuteScalar()?.ToString();
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                string filePath = Path.Combine("data", path);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Перезагрузка интерфейса записей
+        /// </summary>
+        private void RefreshNotes()
+        {
+            foreach (var groupBox in notesGroupBoxes)
+            {
+                // Удаляем GroupBox из формы
+                Controls.Remove(groupBox);
+            }
+
+            // Очищаем список GroupBox'ов
+            notesGroupBoxes.Clear();
+
+            LoadBase();
+        }
+
+        #endregion
+
+        #region методы LoadDataBase
+        /// <summary>
+        /// Кнопка удаления заметок с датой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void DeleteButtonNotesDate(object sender, EventArgs e)
         {
             if (sender is Button deleteButton)
             {
                 if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int recordId = (int)deleteButton.Tag; // Получаем Id записи из Tag кнопки
-                    string path = GetPathForRecord(recordId); // Получаем путь к файлу для записи
+                    string path = GetPathNotesDate(recordId); // Получаем путь к файлу для записи
 
                     // Удаляем запись из базы данных
-                    DeleteRecordFromDatabase(recordId);
+                    DeleteDatabaseNotesDate(recordId);
 
                     // Удаляем файл
                     if (!string.IsNullOrEmpty(path) && File.Exists(path))
@@ -241,19 +265,28 @@ namespace Notes
                     }
 
                     // Обновляем интерфейс
-                    RefreshInterface();
+                    RefreshNotesDate();
                 }
             }
         }
 
-        private void DeleteRecordFromDatabase(int recordId)
+        /// <summary>
+        /// Удаление записей в таблице
+        /// </summary>
+        /// <param name="recordId"></param>
+        void DeleteDatabaseNotesDate(int recordId)
         {
             string deleteQuery = $"DELETE FROM [NotesDate] WHERE [Id] = {recordId}";
             SqlCommand deleteCommand = new SqlCommand(deleteQuery, sqlConnection);
             deleteCommand.ExecuteNonQuery();
         }
 
-        private string GetPathForRecord(int recordId)
+        /// <summary>
+        /// Поучение пути файла с заметкой
+        /// </summary>
+        /// <param name="recordId"></param>
+        /// <returns></returns>
+        string GetPathNotesDate(int recordId)
         {
             string query = $"SELECT [path] FROM [NotesDate] WHERE [Id] = {recordId}";
             SqlCommand command = new SqlCommand(query, sqlConnection);
@@ -268,7 +301,10 @@ namespace Notes
             return path;
         }
 
-        private void RefreshInterface()
+        /// <summary>
+        /// Перезагрузка интерфейса
+        /// </summary>
+        void RefreshNotesDate()
         {
             foreach (var groupBox in dataGroupBoxes)
             {
@@ -282,18 +318,27 @@ namespace Notes
             LoadDataBase();
         }
 
+        #endregion
 
-        private void Change(bool isDate, int id)
+        /// <summary>
+        /// Изминение заметки
+        /// </summary>
+        /// <param name="isDate"></param>
+        /// <param name="id"></param>
+        void Change(bool isDate, int id)
         {
             Form3 form3 = new Form3(isDate, true, id);
             form3.Text = "Изминение заметки";
             form3.ShowDialog();
-            RefreshInterface();
-            RefreshLoadBase();
+            RefreshNotesDate();
+            RefreshNotes();
             LoadBase();
             LoadDataBase();
         }
 
+        #endregion
+
+        #region Инициализация формыы
         public Form1()
         {
             InitializeComponent();
@@ -303,8 +348,6 @@ namespace Notes
         {
             sqlConnection.Close();
         }
-
-        private Timer dataLoadTimer;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -321,6 +364,24 @@ namespace Notes
             CheckAndShowExpiredRecords();
         }
 
+        #endregion
+
+        #region Обновление данных на форме
+        /// <summary>
+        /// Обновление данных о заметках
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataLoadTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshNotesDate();
+            LoadDataBase();
+            CheckAndShowExpiredRecords();
+        }
+
+        /// <summary>
+        /// Проверка того, что заметки просрочены
+        /// </summary>
         private void CheckAndShowExpiredRecords()
         {
             string selectQuery = "SELECT COUNT(*) FROM [NotesDate] WHERE [date] < GETDATE()";
@@ -332,21 +393,16 @@ namespace Notes
                 MessageBox.Show("Обнаружены просроченные записи.", "Просроченные записи", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+        #endregion
 
-        private void DataLoadTimer_Tick(object sender, EventArgs e)
-        {
-            RefreshInterface();
-            LoadDataBase();
-            CheckAndShowExpiredRecords();
-        }
-
+        #region Верхняя панель
         private void заметкуToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form3 form3 = new Form3(false);
             form3.Text = "Создание заметки";
             form3.ShowDialog();
-            RefreshInterface();
-            RefreshLoadBase();
+            RefreshNotesDate();
+            RefreshNotes();
             LoadBase();
             LoadDataBase();
         }
@@ -356,11 +412,22 @@ namespace Notes
             Form3 form3 = new Form3(true);
             form3.Text = "Создание заметки с датой";
             form3.ShowDialog();
-            RefreshInterface();
-            RefreshLoadBase();
+            RefreshNotesDate();
+            RefreshNotes();
             LoadBase();
             LoadDataBase();
         }
+
+        private void удалитьПросроченныеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите удалить просроченные записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                DeleteExpiredRecords();
+                RefreshNotesDate(); // Обновите интерфейс после удаления
+                LoadDataBase(); // Загрузите данные снова после удаления
+            }
+        }
+
         private void DeleteExpiredRecords()
         {
             string selectQuery = "SELECT [Id], [path] FROM [NotesDate] WHERE [date] < GETDATE()";
@@ -377,7 +444,7 @@ namespace Notes
 
                 recordsToDelete.Add(Tuple.Create(recordId, filePath));
             }
-            
+
             reader.Close();
 
             // Удаление записей и связанных файлов
@@ -387,7 +454,7 @@ namespace Notes
                 string filePath = recordToDelete.Item2;
 
                 // Удаляем запись из базы данных
-                DeleteRecordFromDatabase(recordId);
+                DeleteDatabaseNotesDate(recordId);
 
                 // Удаляем файл, если он существует
                 if (File.Exists(filePath))
@@ -396,15 +463,6 @@ namespace Notes
                 }
             }
         }
-
-        private void удалитьПросроченныеToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Вы уверены, что хотите удалить просроченные записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                DeleteExpiredRecords();
-                RefreshInterface(); // Обновите интерфейс после удаления
-                LoadDataBase(); // Загрузите данные снова после удаления
-            }
-        }
+        #endregion
     }
 }
