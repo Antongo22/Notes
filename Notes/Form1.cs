@@ -96,8 +96,14 @@ namespace Notes
         /// </summary>
         void LoadDataBase()
         {
-            string query = "SELECT [Id], [name], [date], [path] FROM [NotesDate] ORDER BY [date] ASC"; // Сортировка по дате в порядке возрастания
+            DateTime startDate = dateTimePicker1.Value;
+            DateTime endDate = dateTimePicker2.Value;
+
+            string query = "SELECT [Id], [name], [date], [path] FROM [NotesDate] WHERE [date] BETWEEN @StartDate AND @EndDate ORDER BY [date] ASC";
             SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.AddWithValue("@StartDate", startDate);
+            command.Parameters.AddWithValue("@EndDate", endDate);
+
             SqlDataReader reader = command.ExecuteReader();
 
             int x = 470;
@@ -351,6 +357,9 @@ namespace Notes
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
+            dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
+
             // Инициализация таймера
             dataLoadTimer = new Timer();
             dataLoadTimer.Interval = 60000; // Интервал в миллисекундах (1 минута)
@@ -464,5 +473,19 @@ namespace Notes
             }
         }
         #endregion
+
+        private void сбросДатыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dateTimePicker1.Value = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
+
+            dateTimePicker2.Value = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
+
+            LoadDataBase();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LoadDataBase();
+        }
     }
 }
