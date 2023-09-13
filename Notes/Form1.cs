@@ -97,12 +97,12 @@ namespace Notes
         /// </summary>
         void LoadDataBase(bool isDrop = false)
         {
-             DateTime startDate = dateTimePicker1.Value;
-             DateTime endDate = dateTimePicker2.Value;
+            //DateTime startDate = dateTimePicker1.Value;
+            //DateTime endDate = dateTimePicker2.Value;
 
-            //DateTime startDate = monthCalendar1.SelectionRange.Start;
-            //DateTime endDate = monthCalendar1.SelectionRange.End;
-            //endDate = endDate.Date.Add(new TimeSpan(23, 59, 59));
+            DateTime startDate = monthCalendar1.SelectionRange.Start;
+            DateTime endDate = monthCalendar1.SelectionRange.End;
+            endDate = endDate.Date.Add(new TimeSpan(23, 59, 59));
 
             if (isDrop)
             {
