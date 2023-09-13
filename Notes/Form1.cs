@@ -441,6 +441,30 @@ namespace Notes
             RefreshNotesDate();
             LoadDataBase();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                isD = false;
+                monthCalendar1.Visible = false;
+
+                dateTimePicker1.Visible = true;
+                dateTimePicker2.Visible = true;
+                label1.Visible = true;
+                label2.Visible = true;
+            }
+            else
+            {
+                isD = true;
+                dateTimePicker1.Visible = false;
+                dateTimePicker2.Visible = false;
+                label1.Visible = false;
+                label2.Visible = false;
+
+                monthCalendar1.Visible = true;
+            }
+        }
         #endregion
 
         #region Верхняя панель
@@ -516,30 +540,7 @@ namespace Notes
                 }
             }
         }
-# endregion
+    # endregion
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox1.Checked)
-            {
-                isD = false;
-                monthCalendar1.Visible = false;
-
-                dateTimePicker1.Visible = true;
-                dateTimePicker2.Visible = true;
-                label1.Visible = true;
-                label2.Visible = true;
-            }
-            else
-            {
-                isD = true;
-                dateTimePicker1.Visible = false;
-                dateTimePicker2.Visible = false;
-                label1.Visible = false;
-                label2.Visible = false;
-
-                monthCalendar1.Visible = true;
-            }
-        }
     }
 }
