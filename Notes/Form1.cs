@@ -106,8 +106,8 @@ namespace Notes
 
             if (isDrop)
             {
-                startDate = DateTimePicker.MinimumDateTime; // Устанавливаем минимальную дату
-                endDate = DateTimePicker.MaximumDateTime; // Устанавливаем максимальную дату
+                startDate = DateTimePicker.MinimumDateTime; 
+                endDate = DateTimePicker.MaximumDateTime; 
             }
 
 
