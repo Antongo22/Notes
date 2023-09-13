@@ -101,7 +101,7 @@ namespace Notes
             SqlDataReader reader = command.ExecuteReader();
 
             int x = 470;
-            int y = 30;
+            int y = 60;
             int textBoxWidth = 205;
             int textBoxHeight = 100;
 
