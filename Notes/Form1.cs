@@ -417,7 +417,7 @@ namespace Notes
         private void DataLoadTimer_Tick(object sender, EventArgs e)
         {
             RefreshNotesDate();
-            LoadDataBase();
+            LoadDataBase(true);
             CheckAndShowExpiredRecords();
         }
 
